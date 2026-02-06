@@ -341,16 +341,12 @@ body {
   }
 }
 
-      /* ===== タブレットでページがめくれない対策 ===== */
-#zoom-wrapper{
-  touch-action: manipulation;
-}
 
 #book{
   touch-action: pan-x;
 }
 
-      #book{
+#book{
   -webkit-user-select: none;
   user-select: none;
 }
@@ -491,11 +487,7 @@ function fitBookToScreen(){
   const scale = Math.min(vw / bookWidth, vh / bookHeight);
   zoom = Math.min(Math.max(scale, 0.6), 2);
 
-  $("#zoom-wrapper").css(
-    "transform",
-    `scale(${zoom})`
-  );
-}
+  }
 
 // リサイズ時
 window.addEventListener("resize", fitBookToScreen);
@@ -646,6 +638,8 @@ function closeMobileMenu(){
 
 </body>
 </html>
+
+
 
 
 
