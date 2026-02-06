@@ -47,18 +47,16 @@ body {
 
 /* 中央配置 */
 #wrapper{
+  position:relative;
   width:100%;
-  height:calc(100vh - 160px); /* ★ UI分を差し引く */
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  height:calc(100vh - 160px);
   overflow:hidden;
 }
 
+
 /* 拡大縮小 */
 #zoom-wrapper{
-  transform-origin:center center;
-overflow:hidden;
+  transform-origin: top left;   /* ★ */
 }
 
 /* 本体 */
@@ -346,22 +344,24 @@ $("#book").turn({
 function fitBookToScreen(){
   const isMobile = window.innerWidth < 1024;
 
-  const bookWidth  = isMobile ? 450 : 900; // ★
+  const bookWidth  = isMobile ? 450 : 900;
   const bookHeight = 650;
 
   const vw = window.innerWidth;
-  const vh = window.innerHeight;
+  const vh = window.innerHeight - 160;
 
-  const marginW = 20;
-  const marginH = 140;
+  const scale = Math.min(vw / bookWidth, vh / bookHeight);
 
-  const scaleX = (vw - marginW) / bookWidth;
-  const scaleY = (vh - marginH) / bookHeight;
+  zoom = Math.min(Math.max(scale, 0.6), 2);
 
-  zoom = Math.min(scaleX, scaleY);
-  zoom = Math.min(Math.max(zoom, 0.6), 2);
+  // ★ 中央に来るように translate を計算
+  const offsetX = (vw - bookWidth * zoom) / 2;
+  const offsetY = (vh - bookHeight * zoom) / 2;
 
-  applyZoom();
+  $("#zoom-wrapper").css(
+    "transform",
+    `translate(${offsetX}px, ${offsetY}px) scale(${zoom})`
+  );
 }
 
 // ★ 画面回転・サイズ変更時にも自動フィット
@@ -481,8 +481,3 @@ function toggleHelp(){
 
 </body>
 </html>
-
-
-
-
-
