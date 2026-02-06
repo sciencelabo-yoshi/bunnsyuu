@@ -487,18 +487,7 @@ function fitBookToScreen(){
 // リサイズ時
 window.addEventListener("resize", fitBookToScreen);
 
-  $("#slider").on("input",function(){
-    $("#book").turn("page",this.value);
-  });
-
-  updateBookmarkView();
-// モバイル端末なら自動フィット
-if(window.innerWidth < 1024){
-  setTimeout(fitBookToScreen, 300);
-}
-
-});
-
+  
 /* ===== ログイン処理 ===== */
 const PASSWORD = "sample";   // ← パスワードはここだけ
 
@@ -644,6 +633,7 @@ function closeMobileMenu(){
 
 </body>
 </html>
+
 
 
 
