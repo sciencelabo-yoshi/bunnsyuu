@@ -347,14 +347,13 @@ function fitBookToScreen(){
   const bookWidth  = isMobile ? 450 : 900;
   const bookHeight = 650;
 
-  const vw = window.innerWidth;
-  const vh = window.innerHeight - 160;
+  const wrapper = document.getElementById("wrapper");
+  const vw = wrapper.clientWidth;
+  const vh = wrapper.clientHeight;
 
   const scale = Math.min(vw / bookWidth, vh / bookHeight);
-
   zoom = Math.min(Math.max(scale, 0.6), 2);
 
-  // ★ 中央に来るように translate を計算
   const offsetX = (vw - bookWidth * zoom) / 2;
   const offsetY = (vh - bookHeight * zoom) / 2;
 
@@ -363,6 +362,7 @@ function fitBookToScreen(){
     `translate(${offsetX}px, ${offsetY}px) scale(${zoom})`
   );
 }
+
 
 // ★ 画面回転・サイズ変更時にも自動フィット
 window.addEventListener("resize", ()=>{
