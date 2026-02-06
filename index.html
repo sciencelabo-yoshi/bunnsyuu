@@ -475,19 +475,28 @@ $(function(){
 
   const isMobile = window.innerWidth < 1024;
 
-  $("#book").turn({
-    width: isMobile ? 450 : 900,
-    height: 650,
-    autoCenter: false,
-    direction:"ltr",
-    display: isMobile ? "single" : "double",
-    when:{
-      turned:(e,p)=>{
-        $("#page-number").text(p+" / "+totalPages);
-        $("#slider").val(p);
-      }
+ $("#book").turn({
+  width: isMobile ? 450 : 900,
+  height: 650,
+  autoCenter: false,
+  direction: "ltr",
+  display: isMobile ? "single" : "double",
+
+  gradients: true,        // ★ 追加
+  acceleration: true,     // ★ 追加
+  elevation: 50,          // ★ 追加（重要）
+
+  when:{
+    turned:(e,p)=>{
+      $("#page-number").text(p+" / "+totalPages);
+      $("#slider").val(p);
     }
-  });
+  }
+});
+
+
+
+
 
   // スライダー操作
   $("#slider").on("input", function(){
@@ -682,6 +691,7 @@ function closeMobileMenu(){
 
 </body>
 </html>
+
 
 
 
