@@ -503,31 +503,50 @@ function removeBookmark(p){
 
 function updateBookmarkView(){
   const list = JSON.parse(localStorage.getItem("bookmarks")||"[]");
-  const area = document.getElementById("bookmark-items");
-  area.innerHTML = "";
 
-  if(list.length===0){
-    area.textContent = "なし";
+  // PC用（左下）
+  const pcArea = document.getElementById("bookmark-items");
+  // モバイル用（☰メニュー内）
+  const mobileArea = document.getElementById("mobile-bookmark-items");
+
+  if(pcArea) pcArea.innerHTML = "";
+  if(mobileArea) mobileArea.innerHTML = "";
+
+  if(list.length === 0){
+    if(pcArea) pcArea.textContent = "なし";
+    if(mobileArea) mobileArea.textContent = "なし";
     return;
   }
 
   list.forEach(p=>{
-    const row = document.createElement("div");
-    row.className = "bookmark-item";
+    const makeRow = ()=>{
+      const row = document.createElement("div");
+      row.style.display = "flex";
+      row.style.justifyContent = "space-between";
+      row.style.margin = "2px 0";
 
-    const page = document.createElement("span");
-    page.className = "bookmark-page";
-    page.textContent = p+" ページ";
-    page.onclick = ()=>$("#book").turn("page",p);
+      const page = document.createElement("span");
+      page.textContent = p + " ページ";
+      page.style.cursor = "pointer";
+      page.style.textDecoration = "underline";
+      page.onclick = ()=>{
+        $("#book").turn("page", p);
+        closeMobileMenu();   // ← スマホでは選んだら閉じる
+      };
 
-    const del = document.createElement("span");
-    del.className = "bookmark-remove";
-    del.textContent = "×";
-    del.onclick = ()=>removeBookmark(p);
+      const del = document.createElement("span");
+      del.textContent = "×";
+      del.style.cursor = "pointer";
+      del.style.color = "#ff8080";
+      del.onclick = ()=>removeBookmark(p);
 
-    row.appendChild(page);
-    row.appendChild(del);
-    area.appendChild(row);
+      row.appendChild(page);
+      row.appendChild(del);
+      return row;
+    };
+
+    if(pcArea) pcArea.appendChild(makeRow());
+    if(mobileArea) mobileArea.appendChild(makeRow());
   });
 }
 
@@ -566,9 +585,18 @@ function closeMobileMenu(){
 <!-- ===== モバイル用メニューボックス ===== -->
 <div id="mobile-menu">
   <div class="menu-box">
-    <button onclick="toggleBookmark()">しおり ★</button>
+
+    <button onclick="toggleBookmark()">このページをしおり ★</button>
+
+    <!-- ★ ここが「しおり一覧の表示場所」 -->
+    <div id="mobile-bookmark-items"
+         style="margin:8px 0; font-size:14px;">
+      なし
+    </div>
+
     <button onclick="toggleHelp()">操作説明</button>
     <button onclick="closeMobileMenu()">閉じる</button>
+
   </div>
 </div>
 
