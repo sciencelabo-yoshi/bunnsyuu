@@ -14,6 +14,16 @@
 <script src="js/turn.min.js"></script>
 
 <style>
+html, body{
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;   /* ★ 縦スクロール完全停止 */
+  overscroll-behavior: none;
+}
+
+
 body {
   background:#444;
   margin:0;
@@ -38,15 +48,17 @@ body {
 /* 中央配置 */
 #wrapper{
   width:100%;
-  height:100vh;
+  height:calc(100vh - 160px); /* ★ UI分を差し引く */
   display:flex;
   justify-content:center;
   align-items:center;
+  overflow:hidden;
 }
 
 /* 拡大縮小 */
 #zoom-wrapper{
   transform-origin:center center;
+overflow:hidden;
 }
 
 /* 本体 */
