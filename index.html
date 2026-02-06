@@ -351,6 +351,15 @@ body {
   user-select: none;
 }
 
+/* ===== タブレット横画面：上が隠れるのを防ぐ ===== */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape){
+  #wrapper{
+    padding-top: 32px;    /* ← 56px → 32px に縮小 */
+    padding-bottom: 80px; /* 少しだけ下も調整 */
+  }
+}
+
+      
 </style>
 </head>
 
@@ -652,6 +661,7 @@ function closeMobileMenu(){
 
 </body>
 </html>
+
 
 
 
