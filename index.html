@@ -47,6 +47,19 @@ body {
 
 /* 中央配置 */
 #wrapper{
+  position: relative;
+  width: 100%;
+  height: calc(100dvh - 56px - 96px); /* ← 上下UI分を引く */
+  margin-top: 56px;   /* 上UI分 */
+  margin-bottom: 96px;/* 下UI分 */
+  box-sizing: border-box;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* 本体 */
 #book{
   width:900px;
@@ -57,15 +70,22 @@ body {
   height:100%;
 }
 
-/* ページ番号 */
 #page-number{
-  position:fixed;
-  bottom:90px;
-  left:50%;
-  transform:translateX(-50%);
-  color:#fff;
-  font-size:16px;
+  position: fixed;
+  bottom: 65px;              /* ← 45px + 余白40px */
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 12px;
+
+  z-index: 3000;             /* 前面に */
+  pointer-events: none;
+
+  background: rgba(0,0,0,0.4); /* 視認性 */
+  padding: 4px 10px;
+  border-radius: 12px;
 }
+
 
 /* 左上 */
 #print-control{
@@ -337,15 +357,6 @@ body {
   -webkit-user-select: none;
   user-select: none;
 }
-
-/* ===== タブレット横画面：上が隠れるのを防ぐ ===== */
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape){
-  #wrapper{
-    padding-top: 32px;    /* ← 56px → 32px に縮小 */
-    padding-bottom: 80px; /* 少しだけ下も調整 */
-  }
-}
-
 
 </style>
 </head>
@@ -648,6 +659,8 @@ function closeMobileMenu(){
 
 </body>
 </html>
+
+
 
 
 
