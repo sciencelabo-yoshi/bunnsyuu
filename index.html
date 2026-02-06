@@ -2,6 +2,12 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width,
+               height=device-height,
+               initial-scale=1.0,
+               viewport-fit=cover">
+
 <title>デジタルブック</title>
 
 <script src="js/jquery.min.js"></script>
@@ -320,11 +326,45 @@ $(function(){
     }
   });
 
+// ===== スマホ・タブレット用 初期フル表示 =====
+function fitBookToScreen(){
+  const bookWidth  = 900;
+  const bookHeight = 650;
+
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  // UI分の余白（タイトル・下部UI）
+  const marginW = 40;
+  const marginH = 140;
+
+  const scaleX = (vw - marginW) / bookWidth;
+  const scaleY = (vh - marginH) / bookHeight;
+
+  zoom = Math.min(scaleX, scaleY);
+  zoom = Math.min(Math.max(zoom, 0.5), 2); // 安全範囲
+
+  applyZoom();
+}
+
+// ★ 画面回転・サイズ変更時にも自動フィット
+window.addEventListener("resize", ()=>{
+  if(window.innerWidth < 1024){
+    fitBookToScreen();
+  }
+});
+
+
   $("#slider").on("input",function(){
     $("#book").turn("page",this.value);
   });
 
   updateBookmarkView();
+// モバイル端末なら自動フィット
+if(window.innerWidth < 1024){
+  setTimeout(fitBookToScreen, 300);
+}
+
 });
 
 /* ===== ログイン処理 ===== */
@@ -424,8 +464,3 @@ function toggleHelp(){
 
 </body>
 </html>
-
-
-
-
-
