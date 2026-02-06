@@ -428,6 +428,7 @@ body {
 
 <script>
 /* ===== 初期化 ===== */
+/* ===== 初期化 ===== */
 $(function(){
   const totalPages = 406;
 
@@ -436,24 +437,34 @@ $(function(){
     $("#book").append(`<div><img src="pages/page${n}.png"></div>`);
   }
 
- const isMobile = window.innerWidth < 1024;
+  const isMobile = window.innerWidth < 1024;
 
-$("#book").turn({
-  width: isMobile ? 450 : 900,   // ★ ここ
-  height: 650,
-  autoCenter: false,
-  direction:"ltr",
-  display: isMobile ? "single" : "double", // ★ ここ
-  when:{
-    turned:(e,p)=>{
-      $("#page-number").text(p+" / "+totalPages);
-      $("#slider").val(p);
+  $("#book").turn({
+    width: isMobile ? 450 : 900,
+    height: 650,
+    autoCenter: false,
+    direction:"ltr",
+    display: isMobile ? "single" : "double",
+    when:{
+      turned:(e,p)=>{
+        $("#page-number").text(p+" / "+totalPages);
+        $("#slider").val(p);
+      }
     }
-  }
+  });
+
+  // スライダー操作
+  $("#slider").on("input", function(){
+    $("#book").turn("page", this.value);
+  });
+
+  // 初期表示調整
+  updateBookmarkView();
+  setTimeout(fitBookToScreen, 300);
 });
 
 
-// ===== スマホ・タブレット用 初期フル表示 =====
+// ===== 画面に合わせて本をフィット =====
 function fitBookToScreen(){
   const isMobile = window.innerWidth < 1024;
 
@@ -473,13 +484,8 @@ function fitBookToScreen(){
   );
 }
 
-
-
-// ★ 画面回転・サイズ変更時にも自動フィット
+// リサイズ時
 window.addEventListener("resize", fitBookToScreen);
-  
-});
-
 
   $("#slider").on("input",function(){
     $("#book").turn("page",this.value);
@@ -638,6 +644,13 @@ function closeMobileMenu(){
 
 </body>
 </html>
+
+
+
+
+
+
+
 
 
 
