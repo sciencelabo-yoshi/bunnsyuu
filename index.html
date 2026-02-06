@@ -313,36 +313,41 @@ $(function(){
     $("#book").append(`<div><img src="pages/page${n}.png"></div>`);
   }
 
-  $("#book").turn({
-    width:900,
-    height:650,
-    autoCenter:true,
-    direction:"ltr",
-    when:{
-      turned:(e,p)=>{
-        $("#page-number").text(p+" / "+totalPages);
-        $("#slider").val(p);
-      }
+ const isMobile = window.innerWidth < 1024;
+
+$("#book").turn({
+  width: isMobile ? 450 : 900,   // ★ ここ
+  height: 650,
+  autoCenter:true,
+  direction:"ltr",
+  display: isMobile ? "single" : "double", // ★ ここ
+  when:{
+    turned:(e,p)=>{
+      $("#page-number").text(p+" / "+totalPages);
+      $("#slider").val(p);
     }
-  });
+  }
+});
+
 
 // ===== スマホ・タブレット用 初期フル表示 =====
 function fitBookToScreen(){
-  const bookWidth  = 900;
+  const isMobile = window.innerWidth < 1024;
+
+  const bookWidth  = isMobile ? 450 : 900; // ★
   const bookHeight = 650;
 
   const vw = window.innerWidth;
   const vh = window.innerHeight;
 
-  // UI分の余白（タイトル・下部UI）
-  const marginW = 40;
+  const marginW = 20;
   const marginH = 140;
 
   const scaleX = (vw - marginW) / bookWidth;
   const scaleY = (vh - marginH) / bookHeight;
 
   zoom = Math.min(scaleX, scaleY);
-  zoom = Math.min(Math.max(zoom, 0.5), 2); // 安全範囲
+  zoom = Math.min(Math.max(zoom, 0.6), 2);
 
   applyZoom();
 }
@@ -464,3 +469,8 @@ function toggleHelp(){
 
 </body>
 </html>
+
+
+
+
+
