@@ -475,19 +475,33 @@ $(function(){
 
 // ===== 画面に合わせて本をフィット =====
 function fitBookToScreen(){
-  const isMobile = window.innerWidth < 1024;
+  const w = window.innerWidth;
 
-  const bookWidth  = isMobile ? 450 : 900;
-  const bookHeight = 650;
+  const isTablet = w >= 600 && w < 1024;   // ★ タブレット判定
+  const isMobile = w < 600;
 
   const wrapper = document.getElementById("wrapper");
   const vw = wrapper.clientWidth;
   const vh = wrapper.clientHeight;
 
-  const scale = Math.min(vw / bookWidth, vh / bookHeight);
-  zoom = Math.min(Math.max(scale, 0.6), 2);
+  // 基準サイズ
+  let baseW = isMobile ? 450 : 900;
+  let baseH = 650;
 
+  // 画面フィット倍率
+  let scale = Math.min(vw / baseW, vh / baseH);
+
+  // ★ タブレットだけ 1.5 倍にする
+  if(isTablet){
+    scale *= 1.5;
   }
+
+  const newW = Math.floor(baseW * scale);
+  const newH = Math.floor(baseH * scale);
+
+  $("#book").turn("size", newW, newH);
+}
+
 
 // リサイズ時
 window.addEventListener("resize", fitBookToScreen);
@@ -638,7 +652,6 @@ function closeMobileMenu(){
 
 </body>
 </html>
-
 
 
 
