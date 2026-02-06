@@ -65,9 +65,16 @@ body {
   width:900px;
   height:650px;
 }
-#book div, #book img{
+
+#book div{
   width:100%;
   height:100%;
+}
+
+#book img{
+  width:100%;
+  height:auto;        /* ← ★ ここが最重要 */
+  object-fit: contain;
 }
 
 #page-number{
@@ -659,6 +666,7 @@ function closeMobileMenu(){
 
 </body>
 </html>
+
 
 
 
