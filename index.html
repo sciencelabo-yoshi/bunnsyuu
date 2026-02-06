@@ -370,6 +370,14 @@ body {
   user-select: none;
 }
 
+/* ★ タッチ端末（スマホ・タブレット）ではズーム用transformを無効化 */
+@media (max-width: 1024px){
+  #zoom-wrapper{
+    transform: none !important;
+  }
+}
+
+
 </style>
 </head>
 
@@ -544,7 +552,10 @@ function zoomIn(){ zoom=Math.min(zoom+0.1,2); applyZoom(); }
 function zoomOut(){ zoom=Math.max(zoom-0.1,0.5); applyZoom(); }
 function resetZoom(){ zoom=1; applyZoom(); }
 function applyZoom(){
-  $("#zoom-wrapper").css("transform",`scale(${zoom})`);
+  // ★ タブレット・スマホではズームを無効化
+  if(window.innerWidth < 1024) return;
+
+  $("#zoom-wrapper").css("transform", `scale(${zoom})`);
 }
 
 /* ===== しおり ===== */
@@ -671,6 +682,7 @@ function closeMobileMenu(){
 
 </body>
 </html>
+
 
 
 
