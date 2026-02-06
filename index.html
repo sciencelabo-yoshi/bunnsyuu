@@ -266,6 +266,31 @@ body {
   }
 }
 
+/* ===== モバイル用メニュー ===== */
+#mobile-menu{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  display:none;
+  z-index:2000;
+}
+
+#mobile-menu .menu-box{
+  position:absolute;
+  top:60px;
+  right:16px;
+  background:#222;
+  padding:16px;
+  border-radius:10px;
+  width:200px;
+}
+
+#mobile-menu button{
+  width:100%;
+  margin:6px 0;
+  padding:8px;
+  font-size:16px;
+}
 
 
 </style>
@@ -523,11 +548,25 @@ function closeMobileMenu(){
   document.getElementById("mobile-menu").style.display = "none";
 }
 
+<!-- ===== モバイル用メニューボックス ===== -->
+<div id="mobile-menu">
+  <div class="menu-box">
+    <button onclick="zoomIn()">拡大 ＋</button>
+    <button onclick="zoomOut()">縮小 －</button>
+    <button onclick="resetZoom()">倍率リセット</button>
+    <hr>
+    <button onclick="toggleBookmark()">しおり ★</button>
+    <button onclick="toggleHelp()">操作説明</button>
+    <button onclick="closeMobileMenu()">閉じる</button>
+  </div>
+</div>
+
 
 </script>
 
 </body>
 </html>
+
 
 
 
