@@ -314,6 +314,28 @@ body {
   color: #ffd700;           /* ゴールド */
 }
 
+/* ===== モバイル：上部タイトルを1行表示 ===== */
+@media (max-width: 1024px){
+  #title-bar{
+    white-space: nowrap;        /* 改行しない */
+    overflow: hidden;           /* はみ出し隠す */
+    text-overflow: ellipsis;    /* … を表示 */
+    max-width: calc(100% - 40px); /* 画面から少し余白 */
+    font-size: 14px;            /* 少し小さく */
+  }
+}
+
+/* ===== モバイル：著作権表記を1行表示 ===== */
+@media (max-width: 1024px){
+  #copyright{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 32px);
+    font-size: 11px;
+  }
+}
+
 
 </style>
 </head>
@@ -613,6 +635,13 @@ function closeMobileMenu(){
 
 </body>
 </html>
+
+
+
+
+
+
+
 
 
 
