@@ -1,277 +1,307 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta
-    name="viewport"
-    content="width=device-width,
-             height=device-height,
-             initial-scale=1.0,
-             viewport-fit=cover"
-  >
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width,
+               height=device-height,
+               initial-scale=1.0,
+               viewport-fit=cover">
 
-  <title>デジタルブック</title>
+<title>デジタルブック</title>
 
-  <script src="js/jquery.min.js"></script>
-  <script src="js/turn.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/turn.min.js"></script>
 
-  <style>
-    html, body{
-      margin:0;
-      padding:0;
-      width:100%;
-      height:100%;
-      overflow:hidden;
-      overscroll-behavior: none;
-    }
+<style>
+html, body{
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  overscroll-behavior: none;
+}
 
-    body{
-      background:#444;
-    }
+body{
+  background:#444;
+}
 
-    /* ===== 上部タイトル ===== */
-    #title-bar{
-      position: fixed;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #fff;
-      font-size: 18px;
-      font-weight: bold;
-      background: rgba(0,0,0,0.5);
-      padding: 6px 16px;
-      border-radius: 6px;
-      z-index: 900;
-      pointer-events: none;
-    }
+/* ===== 上部タイトル ===== */
+#title-bar{
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  background: rgba(0,0,0,0.5);
+  padding: 6px 16px;
+  border-radius: 6px;
+  z-index: 900;
+  pointer-events: none;
+}
 
-    /* ===== 中央配置 ===== */
-    #wrapper{
-      position: relative;
-      width: 100%;
-      height: calc(100dvh - 56px - 96px);
-      margin-top: 56px;
-      margin-bottom: 96px;
-      box-sizing: border-box;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+/* ===== 中央配置 ===== */
+#wrapper{
+  position: relative;
+  width: 100%;
+  height: calc(100dvh - 56px - 96px);
+  margin-top: 56px;
+  margin-bottom: 96px;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    /* ===== 本体 ===== */
-    #book{
-      width:900px;
-      height:650px;
-      margin:0;
-      touch-action: none;
-      -webkit-user-select: none;
-      user-select: none;
-    }
+/* ===== 本体 ===== */
+#book{
+  width:900px;
+  height:650px;
+  touch-action: none;
+  user-select: none;
+}
 
-    #book div{
-      width:100%;
-      height:100%;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-    }
+#book div{
+  width:100%;
+  height:100%;
+  position: relative;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
 
-    #book img{
-      max-width:100%;
-      max-height:100%;
-      width:auto;
-      height:auto;
-      object-fit: contain;
-    }
+#book img{
+  position:absolute;
+  inset:0;
+  margin:auto;
+  max-width:100%;
+  max-height:100%;
+  width:auto;
+  height:auto;
+  object-fit: contain;
+}
 
-    /* ===== ページ番号 ===== */
-    #page-number{
-      position: fixed;
-      bottom: 65px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #fff;
-      font-size: 12px;
-      z-index: 3000;
-      pointer-events: none;
-      background: rgba(0,0,0,0.4);
-      padding: 4px 10px;
-      border-radius: 12px;
-    }
+/* ===== ページ番号 ===== */
+#page-number{
+  position: fixed;
+  bottom: 65px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 12px;
+  z-index: 3000;
+  pointer-events: none;
+  background: rgba(0,0,0,0.4);
+  padding: 4px 10px;
+  border-radius: 12px;
+}
 
-    /* ===== 左上 ===== */
-    #print-control{
-      position:fixed;
-      top:15px;
-      left:15px;
-      color:#fff;
-      z-index:1000;
-    }
+/* ===== 左上 ===== */
+#print-control{
+  position:fixed;
+  top:15px;
+  left:15px;
+  color:#fff;
+  z-index:1000;
+}
 
-    #print-control input{
-      width:70px;
-    }
+#print-control input{
+  width:70px;
+}
 
-    /* ===== 右上 ===== */
-    #top-controls{
-      position:fixed;
-      top:15px;
-      right:15px;
-      z-index:1000;
-    }
+/* ===== 右上 ===== */
+#top-controls{
+  position:fixed;
+  top:15px;
+  right:15px;
+  z-index:1000;
+}
 
-    #top-controls button{
-      margin-left:5px;
-    }
+#top-controls button{
+  margin-left:5px;
+}
 
-    /* ===== スライダー ===== */
-    #slider{
-      position:fixed;
-      bottom:45px;
-      left:50%;
-      transform:translateX(-50%);
-      width:400px;
-    }
+/* ===== スライダー ===== */
+#slider{
+  position:fixed;
+  bottom:45px;
+  left:50%;
+  transform:translateX(-50%);
+  width:400px;
+}
 
-    /* ===== しおり ===== */
-    #bookmark-list{
-      position:fixed;
-      bottom:45px;
-      left:15px;
-      background:rgba(0,0,0,0.45);
-      color:#fff;
-      padding:8px 10px;
-      border-radius:6px;
-      font-size:14px;
-      max-width:180px;
-    }
+/* ===== しおり ===== */
+#bookmark-list{
+  position:fixed;
+  bottom:45px;
+  left:15px;
+  background:rgba(0,0,0,0.45);
+  color:#fff;
+  padding:8px 10px;
+  border-radius:6px;
+  font-size:14px;
+  max-width:180px;
+}
 
-    /* ===== 著作権 ===== */
-    #copyright{
-      position:fixed;
-      bottom:10px;
-      left:50%;
-      transform:translateX(-50%);
-      font-size:12px;
-      color:rgba(255,255,255,0.7);
-      background:rgba(0,0,0,0.4);
-      padding:4px 10px;
-      border-radius:4px;
-      pointer-events:none;
-    }
+/* ===== 著作権 ===== */
+#copyright{
+  position:fixed;
+  bottom:10px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:12px;
+  color:rgba(255,255,255,0.7);
+  background:rgba(0,0,0,0.4);
+  padding:4px 10px;
+  border-radius:4px;
+  pointer-events:none;
+}
 
-    /* ===== モバイル非表示 ===== */
-    @media (max-width:1024px){
-      #print-control,
-      #top-controls,
-      #bookmark-list,
-      #page-number{
-        display:none;
-      }
+/* ===== ログイン画面 ===== */
+#login-overlay{
+  position:fixed;
+  inset:0;
+  background:#111;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:5000;
+}
 
-      #slider{
-        display:block;
-        bottom:40px;
-        width:calc(100% - 40px);
-        max-width:500px;
-      }
-    }
-  </style>
+#login-box{
+  background:#222;
+  color:#fff;
+  padding:30px 40px;
+  border-radius:10px;
+  text-align:center;
+  width:300px;
+}
+
+#login-box input{
+  width:100%;
+  padding:8px;
+  margin:10px 0;
+  font-size:16px;
+}
+
+#login-box button{
+  width:100%;
+  padding:8px;
+  font-size:16px;
+}
+
+#login-error{
+  color:#ff8080;
+  display:none;
+  margin-top:10px;
+}
+
+/* ===== モバイル ===== */
+@media (max-width:1024px){
+  #print-control,
+  #top-controls,
+  #bookmark-list,
+  #page-number{
+    display:none;
+  }
+
+  #slider{
+    display:block;
+    bottom:40px;
+    width:calc(100% - 40px);
+    max-width:500px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <!-- モバイル用メニューボタン -->
-  <div id="menu-button">☰</div>
-
-  <!-- ログイン画面 -->
-  <div id="login-overlay">
-    <div id="login-box">
-      <h2>ログイン</h2>
-      <p>閲覧にはパスワードが必要です</p>
-      <input type="password" id="login-password" placeholder="パスワード">
-      <button onclick="checkPassword()">ログイン</button>
-      <p id="login-error">パスワードが違います</p>
-    </div>
+<!-- ログイン -->
+<div id="login-overlay">
+  <div id="login-box">
+    <h2>ログイン</h2>
+    <p>閲覧にはパスワードが必要です</p>
+    <input type="password" id="login-password" placeholder="パスワード">
+    <button onclick="checkPassword()">ログイン</button>
+    <p id="login-error">パスワードが違います</p>
   </div>
+</div>
 
-  <!-- 上部タイトル -->
-  <div id="title-bar">
-    2025年度　第3学年　学年文集
+<div id="title-bar">2025年度　第3学年　学年文集</div>
+
+<div id="wrapper">
+  <div id="zoom-wrapper">
+    <div id="book"></div>
   </div>
+</div>
 
-  <!-- 本体 -->
-  <div id="wrapper">
-    <div id="zoom-wrapper">
-      <div id="book"></div>
-    </div>
-  </div>
+<div id="page-number">1 / 406</div>
 
-  <div id="page-number">1 / 406</div>
+<input type="range" id="slider" min="1" max="406" value="1">
 
-  <input
-    type="range"
-    id="slider"
-    min="1"
-    max="406"
-    value="1"
-    title="スライダーでページを移動します"
-  >
+<div id="bookmark-list">
+  <strong>しおり</strong>
+  <div id="bookmark-items">なし</div>
+</div>
 
-  <!-- 著作権 -->
-  <div id="copyright">
-    無断転写・複製・インターネット上へのアップロード等は禁じます。
-  </div>
+<div id="copyright">
+  無断転写・複製・インターネット上へのアップロード等は禁じます。
+</div>
 
-  <script>
-    $(function(){
-      const totalPages = 406;
+<script>
+$(function(){
+  const totalPages = 406;
 
-      for(let i=1;i<=totalPages;i++){
-        const n = String(i).padStart(3,"0");
-        $("#book").append(
-          `<div><img src="pages/page${n}.png"></div>`
-        );
+  for(let i=1;i<=totalPages;i++){
+    const n = String(i).padStart(3,"0");
+    $("#book").append(`<div><img src="pages/page${n}.png"></div>`);
+  }
+
+  const isMobile = window.innerWidth < 1024;
+
+  $("#book").turn({
+    width: isMobile ? 450 : 900,
+    height: 650,
+    autoCenter: false,
+    direction: "ltr",
+    display: isMobile ? "single" : "double",
+    gradients: true,
+    acceleration: true,
+    elevation: 50,
+    when:{
+      turned:(e,p)=>{
+        $("#page-number").text(p+" / "+totalPages);
+        $("#slider").val(p);
       }
-
-      const isMobile = window.innerWidth < 1024;
-
-      $("#book").turn({
-        width: isMobile ? 450 : 900,
-        height: 650,
-        autoCenter: false,
-        direction: "ltr",
-        display: isMobile ? "single" : "double",
-        gradients: true,
-        acceleration: true,
-        elevation: 50,
-        when:{
-          turned:(e,p)=>{
-            $("#page-number").text(p+" / "+totalPages);
-            $("#slider").val(p);
-          }
-        }
-      });
-
-      $("#slider").on("input", function(){
-        $("#book").turn("page", this.value);
-      });
-
-      setTimeout(fitBookToScreen, 300);
-    });
-
-    function fitBookToScreen(){
-      const wrapper = document.getElementById("wrapper");
-      const vw = wrapper.clientWidth;
-      const vh = wrapper.clientHeight;
-      const scale = Math.min(vw / 900, vh / 650);
-      $("#book").turn("size", Math.floor(900*scale), Math.floor(650*scale));
     }
-  </script>
+  });
+
+  $("#slider").on("input", function(){
+    $("#book").turn("page", this.value);
+  });
+});
+
+const PASSWORD = "sample";
+
+function checkPassword(){
+  const input = document.getElementById("login-password").value;
+  if(input === PASSWORD){
+    document.getElementById("login-overlay").style.display = "none";
+  }else{
+    document.getElementById("login-error").style.display = "block";
+  }
+}
+</script>
 
 </body>
 </html>
+
+
 
 
 
