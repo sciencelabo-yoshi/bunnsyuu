@@ -668,6 +668,19 @@ function closeMobileMenu(){
   document.getElementById("mobile-menu").style.display = "none";
 }
 
+// ★ タッチ端末ではタップでページ送りを有効化
+if ('ontouchstart' in window) {
+  document.getElementById('book').addEventListener('click', function(e){
+    const rect = this.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+
+    if (x < rect.width / 2) {
+      $("#book").turn("previous");
+    } else {
+      $("#book").turn("next");
+    }
+  });
+}
 
 
 </script>
@@ -691,6 +704,7 @@ function closeMobileMenu(){
 
 </body>
 </html>
+
 
 
 
