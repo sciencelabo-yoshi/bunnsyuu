@@ -49,8 +49,9 @@ body {
 #wrapper{
   position:relative;
   width:100%;
-  height:calc(100vh - 160px);
-  padding-top: clamp(16px, 4vh, 48px); /* ★ 追加 */
+  height:100vh;              /* ★ 削らない */
+  padding-top: clamp(16px, 4vh, 48px);
+  padding-bottom: 120px;     /* ★ 下UI分 */
   box-sizing: border-box;
   overflow:hidden;
 }
@@ -485,3 +486,4 @@ function toggleHelp(){
 
 </body>
 </html>
+
