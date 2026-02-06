@@ -341,6 +341,15 @@ body {
   }
 }
 
+      /* ===== タブレットでページがめくれない対策 ===== */
+#zoom-wrapper{
+  touch-action: manipulation;
+}
+
+#book{
+  touch-action: pan-x;
+}
+
 
 </style>
 </head>
@@ -633,6 +642,7 @@ function closeMobileMenu(){
 
 </body>
 </html>
+
 
 
 
