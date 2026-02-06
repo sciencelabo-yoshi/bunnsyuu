@@ -235,6 +235,12 @@ body {
   margin-top:10px;
 }
 
+#book{
+  width:900px;
+  height:650px;
+  margin:0;          /* ★ 追加 */
+}
+
 
 </style>
 </head>
@@ -331,7 +337,7 @@ $(function(){
 $("#book").turn({
   width: isMobile ? 450 : 900,   // ★ ここ
   height: 650,
-  autoCenter:true,
+  autoCenter: false,
   direction:"ltr",
   display: isMobile ? "single" : "double", // ★ ここ
   when:{
@@ -482,3 +488,6 @@ function toggleHelp(){
 
 </body>
 </html>
+
+</html>
+
