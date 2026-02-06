@@ -59,7 +59,7 @@ body {
 
 /* 拡大縮小 */
 #zoom-wrapper{
-  transform-origin: top left;   /* ★ */
+  transform-origin: center center;
 }
 
 /* 本体 */
@@ -354,19 +354,15 @@ function fitBookToScreen(){
   const vw = wrapper.clientWidth;
   const vh = wrapper.clientHeight;
 
-
-
   const scale = Math.min(vw / bookWidth, vh / bookHeight);
   zoom = Math.min(Math.max(scale, 0.6), 2);
 
-  const offsetX = (vw - bookWidth * zoom) / 2;
- const offsetY = (vh - bookHeight * zoom) / 2;
-
   $("#zoom-wrapper").css(
     "transform",
-    `translate(${offsetX}px, ${offsetY}px) scale(${zoom})`
+    `scale(${zoom})`
   );
 }
+
 
 
 // ★ 画面回転・サイズ変更時にも自動フィット
@@ -486,4 +482,3 @@ function toggleHelp(){
 
 </body>
 </html>
-
