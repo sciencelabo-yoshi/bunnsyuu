@@ -303,6 +303,17 @@ body {
   }
 }
 
+/* ===== しおりページ番号の文字色 ===== */
+.bookmark-page-link{
+  color: #fff;              /* 白 */
+  font-weight: 500;
+}
+
+/* タップ・ホバー時 */
+.bookmark-page-link:hover{
+  color: #ffd700;           /* ゴールド */
+}
+
 
 </style>
 </head>
@@ -527,6 +538,7 @@ function updateBookmarkView(){
 
       const page = document.createElement("span");
       page.textContent = p + " ページ";
+      page.className = "bookmark-page-link"; 
       page.style.cursor = "pointer";
       page.style.textDecoration = "underline";
       page.onclick = ()=>{
@@ -602,6 +614,12 @@ function closeMobileMenu(){
 
 </body>
 </html>
+
+
+
+
+
+
 
 
 
