@@ -518,6 +518,9 @@ function fitBookToScreen(){
   // 画面フィット倍率
   let scale = Math.min(vw / baseW, vh / baseH);
 
+if(isTablet){
+  scale *= 1.6;
+}
   
   const newW = Math.floor(baseW * scale);
   const newH = Math.floor(baseH * scale);
@@ -678,6 +681,7 @@ function closeMobileMenu(){
 
 </body>
 </html>
+
 
 
 
