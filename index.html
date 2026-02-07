@@ -66,6 +66,12 @@ body {
   height:650px;
 }
 
+#book{
+  position: relative;
+  z-index: 100;    /* ★ slider より下 */
+}
+
+
 #book div{
   width:100%;
   height:100%;
@@ -129,6 +135,9 @@ body {
   left:50%;
   transform:translateX(-50%);
   width:400px;
+
+  z-index: 4000;   /* ★ これを追加（bookより上） */
+
 }
 
 /* しおり一覧 */
@@ -519,7 +528,7 @@ function fitBookToScreen(){
   let scale = Math.min(vw / baseW, vh / baseH);
 
 if(isTablet){
-  scale *= 1.6;
+  scale *= 1.8;
 }
   
   const newW = Math.floor(baseW * scale);
@@ -681,6 +690,7 @@ function closeMobileMenu(){
 
 </body>
 </html>
+
 
 
 
