@@ -385,9 +385,10 @@ body {
   position: fixed;
   top: 0;
   bottom: 0;
-  width: 40px;
-  background: rgba(255,0,0,0.25); /* ★ デバッグ用：赤 */
-  pointer-events: none;
+  width: 48px;
+
+  pointer-events: none;   /* ← 押せない＝誤解しない */
+  user-select: none;
   z-index: 9999;
 }
 
@@ -410,33 +411,6 @@ body {
     rgba(255,255,255,0)
   );
 }
-
-/* ページ送り用タップエリア */
-#tap-left,
-#tap-right{
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 20%;          /* 画面左右20% */
-  z-index: 800;        /* bookより上、UIより下 */
-  background: transparent;
-}
-
-/* 左 */
-#tap-left{
-  left: 0;
-}
-
-/* 右 */
-#tap-right{
-  right: 0;
-}
-
-
-
-
-
-
 
 </style>
 </head>
@@ -486,22 +460,13 @@ body {
 <!-- 本体 -->
 <div id="wrapper">
 
-  <!-- 左ヒント（見た目用） -->
-  <div class="page-hint left"></div>
+ <div class="page-hint left"></div>
 
-  <!-- 左タップ領域 -->
-  <div id="tap-left"></div>
-
-  <!-- 本体 -->
   <div id="zoom-wrapper">
     <div id="book"></div>
   </div>
 
-  <!-- 右タップ領域 -->
-  <div id="tap-right"></div>
-
-  <!-- 右ヒント（見た目用） -->
-  <div class="page-hint right"></div>
+<div class="page-hint right"></div>
 
 </div>
 
@@ -556,9 +521,7 @@ $(function(){
   autoCenter: false,
   direction: "ltr",
   display: "double",   // ★ 常に double
-  pageCorners: "bl,br",     // ★ ← これを足す！！
-
-
+pageCorners: "tl,tr,bl,br",     // ★ ← これを足す！！
 
   gradients: true,        // ★ 追加
   acceleration: true,     // ★ 追加
@@ -770,14 +733,6 @@ function flash(side){
   }, 120);
 }
 
-document.getElementById("tap-left").addEventListener("click", ()=>{
-  $("#book").turn("previous");
-});
-
-document.getElementById("tap-right").addEventListener("click", ()=>{
-  $("#book").turn("next");
-});
-
 
 </script>
 
@@ -798,10 +753,10 @@ document.getElementById("tap-right").addEventListener("click", ()=>{
   </div>
 </div>
 
-
-
 </body>
 </html>
+
+
 
 
 
