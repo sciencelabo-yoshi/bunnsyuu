@@ -524,12 +524,20 @@ function fitBookToScreen(){
   let baseW = isMobile ? 450 : 900;
   let baseH = 650;
 
-  // 画面フィット倍率
-  let scale = Math.min(vw / baseW, vh / baseH);
+  // まず「必ず収まる倍率」
+  let scaleFit = Math.min(vw / baseW, vh / baseH);
 
-if(isTablet){
-  scale *= 1.8;
-}
+  let scale = scaleFit;
+
+  // タブレットは少し大きくしたいが…
+  if(isTablet){
+    const desired = scaleFit * 1.8;
+
+    // ★ 縦に収まる上限を超えないよう制限
+    const maxScaleByHeight = vh / baseH;
+
+    scale = Math.min(desired, maxScaleByHeight);
+  }
   
   const newW = Math.floor(baseW * scale);
   const newH = Math.floor(baseH * scale);
@@ -690,7 +698,6 @@ function closeMobileMenu(){
 
 </body>
 </html>
-
 
 
 
