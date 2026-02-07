@@ -49,9 +49,9 @@ body {
 #wrapper{
   position: relative;
   width: 100%;
-  height: calc(100dvh - 56px - 96px); /* ← 上下UI分を引く */
-  margin-top: 56px;   /* 上UI分 */
-  margin-bottom: 96px;/* 下UI分 */
+  height: calc(100dvh - 42px - 35px); /* ← 上下UI分を引く */
+  margin-top: 42px;   /* 上UI分 */
+  margin-bottom: 35px;/* 下UI分 */
   box-sizing: border-box;
   overflow: hidden;
 
@@ -69,7 +69,7 @@ body {
 #book div{
   width:100%;
   height:100%;
-  display:relative;
+  position: relative;
   justify-content:center;
   align-items:center;
 }
@@ -381,6 +381,62 @@ body {
   }
 }
 
+.page-hint{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  background: rgba(255,0,0,0.25); /* ★ デバッグ用：赤 */
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* 左端：うっすら影 */
+.page-hint.left{
+  left: 0;
+  background: linear-gradient(
+    to right,
+    rgba(255,255,255,0.12),
+    rgba(255,255,255,0)
+  );
+}
+
+/* 右端：うっすら影 */
+.page-hint.right{
+  right: 0;
+  background: linear-gradient(
+    to left,
+    rgba(255,255,255,0.12),
+    rgba(255,255,255,0)
+  );
+}
+
+/* ページ送り用タップエリア */
+#tap-left,
+#tap-right{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 20%;          /* 画面左右20% */
+  z-index: 800;        /* bookより上、UIより下 */
+  background: transparent;
+}
+
+/* 左 */
+#tap-left{
+  left: 0;
+}
+
+/* 右 */
+#tap-right{
+  right: 0;
+}
+
+
+
+
+
+
 
 </style>
 </head>
@@ -429,9 +485,24 @@ body {
 
 <!-- 本体 -->
 <div id="wrapper">
+
+  <!-- 左ヒント（見た目用） -->
+  <div class="page-hint left"></div>
+
+  <!-- 左タップ領域 -->
+  <div id="tap-left"></div>
+
+  <!-- 本体 -->
   <div id="zoom-wrapper">
     <div id="book"></div>
   </div>
+
+  <!-- 右タップ領域 -->
+  <div id="tap-right"></div>
+
+  <!-- 右ヒント（見た目用） -->
+  <div class="page-hint right"></div>
+
 </div>
 
 <div id="page-number">1 / 406</div>
@@ -484,11 +555,14 @@ $(function(){
   height: 650,
   autoCenter: false,
   direction: "ltr",
-  display: isMobile ? "single" : "double",
+  display: "double",   // ★ 常に double
+  pageCorners: "bl,br",     // ★ ← これを足す！！
 
-  gradients: true,
-  acceleration: true,
-  elevation: 50,
+
+
+  gradients: true,        // ★ 追加
+  acceleration: true,     // ★ 追加
+  elevation: 50,          // ★ 追加（重要）
 
   when:{
     turned:(e,p)=>{
@@ -497,7 +571,6 @@ $(function(){
     }
   }
 });
-
 
 
 
@@ -680,12 +753,30 @@ if ('ontouchstart' in window) {
     const x = e.clientX - rect.left;
 
     if (x < rect.width / 2) {
+      flash('left');
       $("#book").turn("previous");
     } else {
+      flash('right');
       $("#book").turn("next");
     }
   });
 }
+
+function flash(side){
+  const el = document.querySelector('.page-hint.' + side);
+  el.style.backgroundColor = 'rgba(255,255,255,0.25)';
+  setTimeout(()=>{
+    el.style.backgroundColor = '';
+  }, 120);
+}
+
+document.getElementById("tap-left").addEventListener("click", ()=>{
+  $("#book").turn("previous");
+});
+
+document.getElementById("tap-right").addEventListener("click", ()=>{
+  $("#book").turn("next");
+});
 
 
 </script>
@@ -707,8 +798,16 @@ if ('ontouchstart' in window) {
   </div>
 </div>
 
+
+
 </body>
 </html>
+
+
+
+
+
+
 
 
 
