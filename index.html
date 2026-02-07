@@ -49,9 +49,9 @@ body {
 #wrapper{
   position: relative;
   width: 100%;
-  height: calc(100dvh - 42px - 35px); /* ← 上下UI分を引く */
-  margin-top: 42px;   /* 上UI分 */
-  margin-bottom: 35px;/* 下UI分 */
+  height: calc(100dvh - 56px - 96px); /* ← 上下UI分を引く */
+  margin-top: 56px;   /* 上UI分 */
+  margin-bottom: 96px;/* 下UI分 */
   box-sizing: border-box;
   overflow: hidden;
 
@@ -69,16 +69,12 @@ body {
 #book div{
   width:100%;
   height:100%;
-  position: relative;
+  display:flex;
   justify-content:center;
   align-items:center;
 }
 
 #book img{
-  position: absolute;
-  inset: 0;
-  margin: auto;
-
   max-width:100%;
   max-height:100%;
   width:auto;
@@ -366,7 +362,7 @@ body {
 
 
 #book{
-  touch-action: none;
+  touch-action: manipulation;
 }
 
 #book{
@@ -381,36 +377,6 @@ body {
   }
 }
 
-.page-hint{
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  width: 48px;
-
-  pointer-events: none;   /* ← 押せない＝誤解しない */
-  user-select: none;
-  z-index: 9999;
-}
-
-/* 左端：うっすら影 */
-.page-hint.left{
-  left: 0;
-  background: linear-gradient(
-    to right,
-    rgba(255,255,255,0.12),
-    rgba(255,255,255,0)
-  );
-}
-
-/* 右端：うっすら影 */
-.page-hint.right{
-  right: 0;
-  background: linear-gradient(
-    to left,
-    rgba(255,255,255,0.12),
-    rgba(255,255,255,0)
-  );
-}
 
 </style>
 </head>
@@ -459,15 +425,9 @@ body {
 
 <!-- 本体 -->
 <div id="wrapper">
-
- <div class="page-hint left"></div>
-
   <div id="zoom-wrapper">
     <div id="book"></div>
   </div>
-
-<div class="page-hint right"></div>
-
 </div>
 
 <div id="page-number">1 / 406</div>
@@ -515,29 +475,19 @@ $(function(){
 
   const isMobile = window.innerWidth < 1024;
 
- $("#book").turn({
-  width: isMobile ? 450 : 900,
-  height: 650,
-  autoCenter: false,
-  direction: "ltr",
-  display: "double",   // ★ 常に double
-pageCorners: "tl,tr,bl,br",     // ★ ← これを足す！！
-
-  gradients: true,        // ★ 追加
-  acceleration: true,     // ★ 追加
-  elevation: 50,          // ★ 追加（重要）
-
-  when:{
-    turned:(e,p)=>{
-      $("#page-number").text(p+" / "+totalPages);
-      $("#slider").val(p);
+  $("#book").turn({
+    width: isMobile ? 450 : 900,
+    height: 650,
+    autoCenter: false,
+    direction:"ltr",
+    display: isMobile ? "single" : "double",
+    when:{
+      turned:(e,p)=>{
+        $("#page-number").text(p+" / "+totalPages);
+        $("#slider").val(p);
+      }
     }
-  }
-});
-
-
-
-
+  });
 
   // スライダー操作
   $("#slider").on("input", function(){
@@ -568,11 +518,7 @@ function fitBookToScreen(){
   // 画面フィット倍率
   let scale = Math.min(vw / baseW, vh / baseH);
 
-  // ★ タブレットだけ 1.5 倍にする
-  if(isTablet){
-    scale *= 1.5;
-  }
-
+  
   const newW = Math.floor(baseW * scale);
   const newH = Math.floor(baseH * scale);
 
@@ -709,29 +655,6 @@ function closeMobileMenu(){
   document.getElementById("mobile-menu").style.display = "none";
 }
 
-// ★ タッチ端末ではタップでページ送りを有効化
-if ('ontouchstart' in window) {
-  document.getElementById('book').addEventListener('click', function(e){
-    const rect = this.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-
-    if (x < rect.width / 2) {
-      flash('left');
-      $("#book").turn("previous");
-    } else {
-      flash('right');
-      $("#book").turn("next");
-    }
-  });
-}
-
-function flash(side){
-  const el = document.querySelector('.page-hint.' + side);
-  el.style.backgroundColor = 'rgba(255,255,255,0.25)';
-  setTimeout(()=>{
-    el.style.backgroundColor = '';
-  }, 120);
-}
 
 
 </script>
@@ -755,6 +678,7 @@ function flash(side){
 
 </body>
 </html>
+
 
 
 
